@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+## Requirements
+- [XAMPP 7.1.3.](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.1.33/)
+- Composer 2.2
+- Terminal (cmd,pwsh)
+## Installation
+1. Clone this repo on your machine
+2. Start Apache and MySQL on XAMPP
+3. Run `composer update --ignore-platform-reqs`
+4. Create a database in `localhost/phpmyadmin`
+5. Make a copy of .env.example `cp .env.example .env`
+6. Edit `.env` to match database details
+7. Migrate tables by `php artisan migrate:fresh`
+8. Seed database `php artisan db:seed`
+9. Generate new key `php artisan key:generate`
+10. Run website `php artisan serve` 
 
-You can use the [editor on GitHub](https://github.com/jefflapuz09/eBrgy/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+## Others
+**Login Details**
+```php
+email: jeff.lapuz09@gmail.com
+pass: qweqwe
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jefflapuz09/eBrgy/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.

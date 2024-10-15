@@ -14,7 +14,7 @@ class HouseholdSeeder extends Seeder
     {
         DB::table('households')->insert([
             'id' => '1',
-            'street' => '2844 Int. 19 Aurora Blvd.',
+            'street' => '123 ',
             'brgy' => 'Sta. Cruz',
             'city' => 'Manila',
             'isActive' => 1,
@@ -25,15 +25,6 @@ class HouseholdSeeder extends Seeder
         DB::table('inhabitants')->insert([
             'id' => '1',
             'residentId' => '1',
-            'householdId' => '1',
-            'isActive' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        DB::table('inhabitants')->insert([
-            'id' => '2',
-            'residentId' => '2',
             'householdId' => '1',
             'isActive' => 1,
             'created_at' => Carbon::now(),
