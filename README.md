@@ -3,7 +3,7 @@
 - Composer 2.2
 - Terminal (cmd,pwsh)
 ## Installation
-1. Clone this repo on your machine
+1. Clone this repo on xampp's htdocs folder
 2. Start Apache and MySQL on XAMPP
 3. Run `composer update`
 4. Create a database in `localhost/phpmyadmin`
@@ -12,7 +12,7 @@
 7. Migrate tables by `php artisan migrate:fresh`
 8. Seed database `php artisan db:seed`
 9. Generate new key `php artisan key:generate`
-10. Run website `php artisan serve` 
+10. Run website through localhost/BarangayBMIS (running w/ artisan may cause problems)
 
 ## Others
 **Login Details**

@@ -19,9 +19,9 @@
 @endif
 <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Blotter Records</h3>
+      <h3 class="box-title">Database Backups</h3>
       <div class="box-tools pull-right">
-        <a href="{{ url('/Backup/Create') }}" class="btn btn-xs btn-success">New Blotter</a>
+        <a href="{{ url('/Backup/Create') }}" class="btn btn-xs btn-success">Create Backup</a>
       </div>
     </div>
     <div class="box-body">
@@ -35,9 +35,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($backups as $b)
+                @foreach($backups as $backup)
                 <tr>
-                    <td>{{$b}}</td>
+                    <td>{{$backup['file_name']}}</td>
+                    <td>{{$backup['file_size']}}</td>
+                    <td>{{$backup['last_modified']}}</td>
+                    <td>{{$backup['file_age']}}</td>
                 </tr>
                 @endforeach
             </tbody>
