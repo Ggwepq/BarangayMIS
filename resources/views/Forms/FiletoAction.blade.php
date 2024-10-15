@@ -33,8 +33,8 @@
                 </div>
                 <hr style="position:absolute; top:65px; left:50px; opacity:0.75; width:85%;">
             </div>
-            <img src="{{ asset('img/logo.png') }}" height="120px" style="margin-top:-50px; float:left; opacity:0.5;">
-            <img src="{{ asset('img/logomanila.png') }}" height="110px" style="margin-top:-50px; float:right; opacity:0.5;">
+            <img src="{{ public_path('img/logo.png') }}" height="120px" style="margin-top:-50px; float:left; opacity:0.5;">
+            <img src="{{ public_path('img/logomanila.png') }}" height="110px" style="margin-top:-50px; float:right; opacity:0.5;">
         </div>
         <div class="">
             <div class="header" style="line-height: 5px; float:left; margin-top:150px;">

@@ -32,11 +32,11 @@
                 </div>
                 <hr style="position:absolute; top:65px; left:50px; opacity:0.75; width:85%;">
             </div>
-            <img src="{{ asset('img/logo.png') }}" height="120px" style="margin-top:-50px; float:left; opacity:0.5;">
-            <img src="{{ asset('img/logomanila.png') }}" height="110px" style="margin-top:-50px; float:right; opacity:0.5;">
+            <img src="{{ public_path('img/logo.png') }}" height="120px" style="margin-top:-50px; float:left; opacity:0.5;">
+            <img src="{{ public_path('img/logomanila.png') }}" height="110px" style="margin-top:-50px; float:right; opacity:0.5;">
         </div>
         <div class="">
-            <img src="{{ asset('img/logomanila.png') }}" height="600px" style=" z-index:-999; margin-left:-45px; margin-top:170px; opacity:0.5;">
+            <img src="{{ public_path('img/logomanila.png') }}" height="600px" style=" z-index:-999; margin-left:-45px; margin-top:170px; opacity:0.5;">
             <div class="header" style="position:absolute; left:15px; line-height: 5px; text-align: center; margin-top:150px;">
                 <h2>Office of the Barangay Chairman</h2>
                 <h3>Barangay Certification</h3>

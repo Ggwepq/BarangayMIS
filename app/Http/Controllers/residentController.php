@@ -25,14 +25,14 @@ class residentController extends Controller
      */
     public function index()
     {
-        $post = Resident::where('isActive',1)->where('isRegistered',1)->get();
-        return view('Resident.index',compact('post'));
+        $post = Resident::where('isActive', 1)->where('isRegistered', 1)->get();
+        return view('Resident.index', compact('post'));
     }
 
     public function index2()
     {
-        $post = Resident::where('isActive',1)->where('isRegistered',0)->get();
-        return view('Non-resident.index',compact('post'));
+        $post = Resident::where('isActive', 1)->where('isRegistered', 0)->get();
+        return view('Non-resident.index', compact('post'));
     }
 
     /**
@@ -58,10 +58,12 @@ class residentController extends Controller
      */
     public function store(Request $request)
     {
+        /*dd($request->all());*/
+
         $rules = [
-            'firstName' => ['required','max:70','unique:residents', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'middleName' => ['nullable','max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'lastName' => ['required','max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'firstName' => ['required', 'max:70', 'unique:residents', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'middleName' => ['nullable', 'max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'lastName' => ['required', 'max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
             'street' => 'required|max:70',
             'brgy' => 'required|max:50',
             'city' => 'required|max:50',
@@ -76,7 +78,7 @@ class residentController extends Controller
             'tinNo' => 'nullable|max:50',
             'periodResidence' => 'required|max:50',
             'image' => 'image|mimes:jpeg,png,jpg,svg',
-            'contactNumber' => ['nullable','regex:/^[^_]+$/'],
+            'contactNumber' => ['nullable', 'regex:/^[^_]+$/'],
             'created_at' => 'required',
             'motherFirstName' => 'nullable|max:70',
             'motherMiddleName' => 'nullable|max:20',
@@ -89,7 +91,7 @@ class residentController extends Controller
             'unique' => ':attribute already exists.',
             'required' => 'The :attribute field is required.',
             'max' => 'The :attribute field must be no longer than :max characters.',
-            'regex' => 'The :attribute must not contain special characters.'              
+            'regex' => 'The :attribute must not contain special characters.'
         ];
         $niceNames = [
             'firstName' => 'First Name',
@@ -118,24 +120,21 @@ class residentController extends Controller
             'fatherMiddleName' => 'Father Middle Name',
             'fatherLastName' => 'Father Last Name'
         ];
-        $validator = Validator::make($request->all(),$rules,$messages);
-        $validator->setAttributeNames($niceNames); 
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator->setAttributeNames($niceNames);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
-        }
-        else
-        {
-            try 
-            {
+        } else {
+            try {
                 $file = $request->file('image');
                 $pic = "";
-                if($file == '' || $file == null){
+                if ($file == '' || $file == null) {
                     $pic = "img/steve.jpg";
-                }else{
+                } else {
                     $date = date("Ymdhis");
                     $extension = $request->file('image')->getClientOriginalExtension();
-                    $pic = "img/".$date.'.'.$extension;
-                    $request->file('image')->move("img",$pic);    
+                    $pic = "img/" . $date . '.' . $extension;
+                    $request->file('image')->move("img", $pic);
                     // $request->file('photo')->move(public_path("/uploads"), $newfilename);
                 }
 
@@ -171,22 +170,19 @@ class residentController extends Controller
                     'fatherLastName' => $request->fatherLastName,
                 ]);
 
-                if($request->filled('voterId'))
-                {
+                if ($request->filled('voterId')) {
                     Voter::create([
                         'residentId' => $resident->id,
                         'voterId' => $request->voterId,
                         'precintNo' => $request->precintNo
                     ]);
                 }
-          
-            }
-            catch(\Illuminate\Database\QueryException $e){
+            } catch (\Illuminate\Database\QueryException $e) {
                 DB::rollBack();
                 $errMess = $e->getMessage();
                 return Redirect::back()->withErrors($errMess);
             }
-            
+
 
             return redirect('/Resident')->withSuccess('Successfully inserted into the database.');
         }
@@ -196,9 +192,9 @@ class residentController extends Controller
     public function notResident(Request $request)
     {
         $rules = [
-            'firstName' => ['required','max:70','unique:residents', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'middleName' => ['nullable','max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'lastName' => ['required','max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'firstName' => ['required', 'max:70', 'unique:residents', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'middleName' => ['nullable', 'max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'lastName' => ['required', 'max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
             'street' => 'required|max:70',
             'brgy' => 'required|max:50',
             'city' => 'required|max:50',
@@ -213,7 +209,7 @@ class residentController extends Controller
             'tinNo' => 'nullable|max:50',
             'periodResidence' => 'required|max:50',
             'image' => 'image|mimes:jpeg,png,jpg,svg',
-            'contactNumber' => ['nullable','regex:/^[^_]+$/'],
+            'contactNumber' => ['nullable', 'regex:/^[^_]+$/'],
             'created_at' => 'required',
             'motherFirstName' => 'nullable|max:70',
             'motherMiddleName' => 'nullable|max:20',
@@ -226,7 +222,7 @@ class residentController extends Controller
             'unique' => ':attribute already exists.',
             'required' => 'The :attribute field is required.',
             'max' => 'The :attribute field must be no longer than :max characters.',
-            'regex' => 'The :attribute must not contain special characters.'              
+            'regex' => 'The :attribute must not contain special characters.'
         ];
         $niceNames = [
             'firstName' => 'First Name',
@@ -255,24 +251,21 @@ class residentController extends Controller
             'fatherMiddleName' => 'Father Middle Name',
             'fatherLastName' => 'Father Last Name'
         ];
-        $validator = Validator::make($request->all(),$rules,$messages);
-        $validator->setAttributeNames($niceNames); 
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator->setAttributeNames($niceNames);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 $file = $request->file('image');
                 $pic = "";
-                if($file == '' || $file == null){
+                if ($file == '' || $file == null) {
                     $pic = "img/steve.jpg";
-                }else{
+                } else {
                     $date = date("Ymdhis");
                     $extension = $request->file('image')->getClientOriginalExtension();
-                    $pic = "img/".$date.'.'.$extension;
-                    $request->file('image')->move("img",$pic);    
+                    $pic = "img/" . $date . '.' . $extension;
+                    $request->file('image')->move("img", $pic);
                     // $request->file('photo')->move(public_path("/uploads"), $newfilename);
                 }
 
@@ -309,16 +302,14 @@ class residentController extends Controller
                     'fatherLastName' => $request->fatherLastName,
                 ]);
 
-                if($request->filled('voterId'))
-                {
-                Voter::create([
-                    'residentId' => $resident->id,
-                    'voterId' => $request->voterId,
-                    'precintNo' => $request->precintNo
-                ]);
+                if ($request->filled('voterId')) {
+                    Voter::create([
+                        'residentId' => $resident->id,
+                        'voterId' => $request->voterId,
+                        'precintNo' => $request->precintNo
+                    ]);
                 }
-            }
-            catch(\Illuminate\Database\QueryException $e){
+            } catch (\Illuminate\Database\QueryException $e) {
                 DB::rollBack();
                 $errMess = $e->getMessage();
                 return Redirect::back()->withErrors($errMess);
@@ -346,14 +337,14 @@ class residentController extends Controller
     public function edit($id)
     {
         $post = Resident::find($id);
-        return view('Resident.update',compact('post'));
+        return view('Resident.update', compact('post'));
     }
 
 
     public function edit2($id)
     {
         $post = Resident::find($id);
-        return view('Non-resident.update',compact('post'));
+        return view('Non-resident.update', compact('post'));
     }
     /**
      * Update the specified resource in storage.
@@ -365,9 +356,9 @@ class residentController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'firstName' => ['required','max:70',Rule::unique('residents')->ignore($id), 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'middleName' => ['nullable','max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'lastName' => ['required','max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'firstName' => ['required', 'max:70', Rule::unique('residents')->ignore($id), 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'middleName' => ['nullable', 'max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'lastName' => ['required', 'max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
             'street' => 'required|max:70',
             'brgy' => 'required|max:50',
             'city' => 'required|max:50',
@@ -382,7 +373,7 @@ class residentController extends Controller
             'tinNo' => 'nullable|max:50',
             'periodResidence' => 'required|max:50',
             'image' => 'image|mimes:jpeg,png,jpg,svg',
-            'contactNumber' => ['nullable','regex:/^[^_]+$/'],
+            'contactNumber' => ['nullable', 'regex:/^[^_]+$/'],
             'created_at' => 'required',
             'motherFirstName' => 'nullable|max:70',
             'motherMiddleName' => 'nullable|max:20',
@@ -395,7 +386,7 @@ class residentController extends Controller
             'unique' => ':attribute already exists.',
             'required' => 'The :attribute field is required.',
             'max' => 'The :attribute field must be no longer than :max characters.',
-            'regex' => 'The :attribute must not contain special characters.'              
+            'regex' => 'The :attribute must not contain special characters.'
         ];
         $niceNames = [
             'firstName' => 'First Name',
@@ -424,25 +415,22 @@ class residentController extends Controller
             'fatherMiddleName' => 'Father Middle Name',
             'fatherLastName' => 'Father Last Name'
         ];
-        $validator = Validator::make($request->all(),$rules,$messages);
-        $validator->setAttributeNames($niceNames); 
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator->setAttributeNames($niceNames);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 $file = $request->file('image');
                 $pic = "";
-                if($file == '' || $file == null){
+                if ($file == '' || $file == null) {
                     $nullpic = Resident::find($id);
                     $pic = $nullpic->image;
-                }else{
+                } else {
                     $date = date("Ymdhis");
                     $extension = $request->file('image')->getClientOriginalExtension();
-                    $pic = "img/".$date.'.'.$extension;
-                    $request->file('image')->move("img",$pic);    
+                    $pic = "img/" . $date . '.' . $extension;
+                    $request->file('image')->move("img", $pic);
                     // $request->file('photo')->move(public_path("/uploads"), $newfilename);
                 }
 
@@ -468,19 +456,18 @@ class residentController extends Controller
                 ]);
 
                 $chkVoter = DB::table('residents as r')
-                ->join('voters as v','v.residentId','r.id')
-                ->select('r.*')
-                ->where('r.id',$id)
-                ->get();
+                    ->join('voters as v', 'v.residentId', 'r.id')
+                    ->select('r.*')
+                    ->where('r.id', $id)
+                    ->get();
 
                 $chkParent = DB::table('residents as r')
-                ->join('parents as p','p.residentId','r.id')
-                ->select('r.*')
-                ->where('r.id',$id)
-                ->get();
+                    ->join('parents as p', 'p.residentId', 'r.id')
+                    ->select('r.*')
+                    ->where('r.id', $id)
+                    ->get();
 
-                if(count($chkParent)!=0)
-                {
+                if (count($chkParent) != 0) {
                     parentModel::find($request->parentid)->updateOrCreate([
                         'residentId' => $request->residentId,
                         'motherFirstName' => $request->motherFirstName,
@@ -492,8 +479,7 @@ class residentController extends Controller
                     ]);
                 }
 
-                if(count($chkParent)==0)
-                {
+                if (count($chkParent) == 0) {
                     parentModel::create([
                         'residentId' => $request->residentId,
                         'motherFirstName' => $request->motherFirstName,
@@ -504,11 +490,9 @@ class residentController extends Controller
                         'fatherLastName' => $request->fatherLastName,
                     ]);
                 }
-                
-                if($request->filled('voterId'))
-                {
-                    if(count($chkVoter) == 0)
-                    {
+
+                if ($request->filled('voterId')) {
+                    if (count($chkVoter) == 0) {
                         Voter::create([
                             'residentId' => $request->residentId,
                             'voterId' => $request->voterId,
@@ -516,8 +500,7 @@ class residentController extends Controller
                         ]);
                     }
 
-                    if(count($chkVoter) != 0)
-                    {
+                    if (count($chkVoter) != 0) {
                         Voter::find($request->vId)->updateOrCreate([
                             'residentId' => $request->residentId,
                             'voterId' => $request->voterId,
@@ -525,8 +508,7 @@ class residentController extends Controller
                         ]);
                     }
                 }
-            }
-            catch(\Illuminate\Database\QueryException $e){
+            } catch (\Illuminate\Database\QueryException $e) {
                 DB::rollBack();
                 $errMess = $e->getMessage();
                 return Redirect::back()->withErrors($errMess);
@@ -539,9 +521,9 @@ class residentController extends Controller
     public function update2(Request $request, $id)
     {
         $rules = [
-            'firstName' => ['required','max:70',Rule::unique('residents')->ignore($id), 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'middleName' => ['nullable','max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
-            'lastName' => ['required','max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'firstName' => ['required', 'max:70', Rule::unique('residents')->ignore($id), 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'middleName' => ['nullable', 'max:20', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
+            'lastName' => ['required', 'max:50', 'regex:/^[^~`!@#*_={}|\;<>,?()$%&^]+$/'],
             'street' => 'required|max:70',
             'brgy' => 'required|max:50',
             'city' => 'required|max:50',
@@ -556,7 +538,7 @@ class residentController extends Controller
             'tinNo' => 'nullable|max:50',
             'periodResidence' => 'required|max:50',
             'image' => 'image|mimes:jpeg,png,jpg,svg',
-            'contactNumber' => ['nullable','regex:/^[^_]+$/'],
+            'contactNumber' => ['nullable', 'regex:/^[^_]+$/'],
             'created_at' => 'required',
             'motherFirstName' => 'nullable|max:70',
             'motherMiddleName' => 'nullable|max:20',
@@ -569,7 +551,7 @@ class residentController extends Controller
             'unique' => ':attribute already exists.',
             'required' => 'The :attribute field is required.',
             'max' => 'The :attribute field must be no longer than :max characters.',
-            'regex' => 'The :attribute must not contain special characters.'              
+            'regex' => 'The :attribute must not contain special characters.'
         ];
         $niceNames = [
             'firstName' => 'First Name',
@@ -598,25 +580,22 @@ class residentController extends Controller
             'fatherMiddleName' => 'Father Middle Name',
             'fatherLastName' => 'Father Last Name'
         ];
-        $validator = Validator::make($request->all(),$rules,$messages);
-        $validator->setAttributeNames($niceNames); 
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator->setAttributeNames($niceNames);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 $file = $request->file('image');
                 $pic = "";
-                if($file == '' || $file == null){
+                if ($file == '' || $file == null) {
                     $nullpic = Resident::find($id);
                     $pic = $nullpic->image;
-                }else{
+                } else {
                     $date = date("Ymdhis");
                     $extension = $request->file('image')->getClientOriginalExtension();
-                    $pic = "img/".$date.'.'.$extension;
-                    $request->file('image')->move("img",$pic);    
+                    $pic = "img/" . $date . '.' . $extension;
+                    $request->file('image')->move("img", $pic);
                     // $request->file('photo')->move(public_path("/uploads"), $newfilename);
                 }
 
@@ -642,19 +621,18 @@ class residentController extends Controller
                 ]);
 
                 $chkVoter = DB::table('residents as r')
-                ->join('voters as v','v.residentId','r.id')
-                ->select('r.*')
-                ->where('r.id',$id)
-                ->get();
+                    ->join('voters as v', 'v.residentId', 'r.id')
+                    ->select('r.*')
+                    ->where('r.id', $id)
+                    ->get();
 
                 $chkParent = DB::table('residents as r')
-                ->join('parents as p','p.residentId','r.id')
-                ->select('r.*')
-                ->where('r.id',$id)
-                ->get();
+                    ->join('parents as p', 'p.residentId', 'r.id')
+                    ->select('r.*')
+                    ->where('r.id', $id)
+                    ->get();
 
-                if(count($chkParent)!=0)
-                {
+                if (count($chkParent) != 0) {
                     parentModel::find($request->parentid)->updateOrCreate([
                         'residentId' => $request->residentId,
                         'motherFirstName' => $request->motherFirstName,
@@ -665,9 +643,8 @@ class residentController extends Controller
                         'fatherLastName' => $request->fatherLastName,
                     ]);
                 }
-                
-                if(count($chkParent)==0)
-                {
+
+                if (count($chkParent) == 0) {
                     parentModel::create([
                         'residentId' => $request->residentId,
                         'motherFirstName' => $request->motherFirstName,
@@ -678,11 +655,9 @@ class residentController extends Controller
                         'fatherLastName' => $request->fatherLastName,
                     ]);
                 }
-                
-                if($request->filled('voterId'))
-                {
-                    if(count($chkVoter) == 0)
-                    {
+
+                if ($request->filled('voterId')) {
+                    if (count($chkVoter) == 0) {
                         Voter::create([
                             'residentId' => $request->residentId,
                             'voterId' => $request->voterId,
@@ -690,8 +665,7 @@ class residentController extends Controller
                         ]);
                     }
 
-                    if(count($chkVoter) != 0)
-                    {
+                    if (count($chkVoter) != 0) {
                         Voter::find($request->vId)->updateOrCreate([
                             'residentId' => $request->residentId,
                             'voterId' => $request->voterId,
@@ -699,8 +673,7 @@ class residentController extends Controller
                         ]);
                     }
                 }
-            }
-            catch(\Illuminate\Database\QueryException $e){
+            } catch (\Illuminate\Database\QueryException $e) {
                 DB::rollBack();
                 $errMess = $e->getMessage();
                 return Redirect::back()->withErrors($errMess);
@@ -718,13 +691,13 @@ class residentController extends Controller
     {
 
         Resident::find($id)->update(['isActive' => 0]);
-            return redirect('/Resident');    
+        return redirect('/Resident');
     }
 
     public function soft()
     {
-        $post = Resident::where('isActive',0)->get();
-        return view('Resident.soft',compact('post'));
+        $post = Resident::where('isActive', 0)->get();
+        return view('Resident.soft', compact('post'));
     }
 
     public function reactivate($id)
@@ -737,13 +710,13 @@ class residentController extends Controller
     {
 
         Resident::find($id)->update(['isActive' => 0]);
-            return redirect('/Resident/NotResident');    
+        return redirect('/Resident/NotResident');
     }
 
     public function soft2()
     {
-        $post = Resident::where('isActive',0)->get();
-        return view('Non-resident.soft',compact('post'));
+        $post = Resident::where('isActive', 0)->get();
+        return view('Non-resident.soft', compact('post'));
     }
 
     public function reactivate2($id)
@@ -756,30 +729,25 @@ class residentController extends Controller
     {
         $post = Resident::find($id);
 
-        $chkHousehold = Inhabitant::where('residentId',$id)->get();
-        $chkBlotter = Blotter::where('complainant',$id)->orWhere('complainedResident', $id)->get();
-        $chkBusiness = Business::where('residentId',$id)->get();
-        $chkSchedule = Schedule::where('residentId',$id)->get();
-        $chkOfficer = Officer::where('residentId',$id)->get();
+        $chkHousehold = Inhabitant::where('residentId', $id)->get();
+        $chkBlotter = Blotter::where('complainant', $id)->orWhere('complainedResident', $id)->get();
+        $chkBusiness = Business::where('residentId', $id)->get();
+        $chkSchedule = Schedule::where('residentId', $id)->get();
+        $chkOfficer = Officer::where('residentId', $id)->get();
 
-        if(count($chkHousehold) > 0 || count($chkBlotter) > 0 || count($chkBusiness) > 0 || count($chkSchedule) > 0 || count($chkOfficer) > 0)
-        {
+        if (count($chkHousehold) > 0 || count($chkBlotter) > 0 || count($chkBusiness) > 0 || count($chkSchedule) > 0 || count($chkOfficer) > 0) {
             return redirect('/Resident')->withError('It seems that the record is still being used in other items. Deletion failed.');
-        }
-        else
-        {
-            if(count($post->Parents)!=0)
-            {
-                $parent = parentModel::where('residentId',$post->id)->first();
+        } else {
+            if (count($post->Parents) != 0) {
+                $parent = parentModel::where('residentId', $post->id)->first();
                 $parent->delete();
             }
-    
-            if(count($post->Voter)!=0)
-            {
-                $voter = Voter::where('residentId',$post->id)->first();
+
+            if (count($post->Voter) != 0) {
+                $voter = Voter::where('residentId', $post->id)->first();
                 $voter->delete();
             }
-    
+
             $post->delete();
             return redirect('/Resident/Soft');
         }
@@ -788,31 +756,26 @@ class residentController extends Controller
     public function remove2($id)
     {
         $post = Resident::find($id);
-        
-        $chkHousehold = Inhabitant::where('residentId',$id)->get();
-        $chkBlotter = Blotter::where('complainant',$id)->orWhere('complainedResident', $id)->get();
-        $chkBusiness = Business::where('residentId',$id)->get();
-        $chkSchedule = Schedule::where('residentId',$id)->get();
-        $chkOfficer = Officer::where('residentId',$id)->get();
 
-        if(count($chkHousehold) > 0 || count($chkBlotter) > 0 || count($chkBusiness) > 0 || count($chkSchedule) > 0 || count($chkOfficer) > 0)
-        {
+        $chkHousehold = Inhabitant::where('residentId', $id)->get();
+        $chkBlotter = Blotter::where('complainant', $id)->orWhere('complainedResident', $id)->get();
+        $chkBusiness = Business::where('residentId', $id)->get();
+        $chkSchedule = Schedule::where('residentId', $id)->get();
+        $chkOfficer = Officer::where('residentId', $id)->get();
+
+        if (count($chkHousehold) > 0 || count($chkBlotter) > 0 || count($chkBusiness) > 0 || count($chkSchedule) > 0 || count($chkOfficer) > 0) {
             return redirect('/Resident/NotResident')->withError('It seems that the record is still being used in other items. Deletion failed.');
-        }
-        else
-        {
-            if(count($post->Parents)!=0)
-            {
-                $parent = parentModel::where('residentId',$post->id)->first();
+        } else {
+            if (count($post->Parents) != 0) {
+                $parent = parentModel::where('residentId', $post->id)->first();
                 $parent->delete();
             }
-    
-            if(count($post->Voter)!=0)
-            {
-                $voter = Voter::where('residentId',$post->id)->first();
+
+            if (count($post->Voter) != 0) {
+                $voter = Voter::where('residentId', $post->id)->first();
                 $voter->delete();
             }
-    
+
             $post->delete();
             return redirect('/Resident/NotResident/Soft');
         }

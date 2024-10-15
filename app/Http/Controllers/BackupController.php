@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Artisan;
-use Log;
-use Storage;
+use Exception;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 
 class BackupController extends Controller
@@ -13,7 +14,6 @@ class BackupController extends Controller
     public function index()
     {
         $disk = Storage::disk(config('Laravel/Laravel.backup.destination.disks')[0]);
-   
 
         $files = $disk->files(config('laravel-backup.backup.name'));
         $backups = [];
@@ -31,7 +31,7 @@ class BackupController extends Controller
         }
         // reverse the backups, so the newest one would be on top
         $backups = array_reverse($backups);
-    
+
         return view("Backup.index")->with(compact('backups'));
     }
 
@@ -41,13 +41,15 @@ class BackupController extends Controller
             // start the backup process
             Artisan::call('backup:run', ['--only-db' => true]);
             $output = Artisan::output();
+
+            dd($output);
             // log the results
             Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
             // return the results as a response to the ajax call
-           
+
             return redirect()->back();
         } catch (Exception $e) {
-            
+            dd($e);
             return redirect()->back();
         }
     }
@@ -65,7 +67,7 @@ class BackupController extends Controller
             $fs = Storage::disk(config('laravel-backup.backup.destination.disks')[0])->getDriver();
             $stream = $fs->readStream($file);
 
-            return \Response::stream(function () use ($stream) {
+            return Response::stream(function () use ($stream) {
                 fpassthru($stream);
             }, 200, [
                 "Content-Type" => $fs->getMimetype($file),

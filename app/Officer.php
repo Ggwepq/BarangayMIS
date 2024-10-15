@@ -14,11 +14,13 @@ class Officer extends Model
         'isActive'
     ];
 
-    public function Resident(){
-        return $this->belongsTo('App\Resident','residentId');
+    public function Resident()
+    {
+        return $this->belongsTo('App\Resident', 'residentId');
     }
 
-    public function User(){
-        return $this->hasMany('App\User','officerId');
+    public function User()
+    {
+        return $this->hasMany('App\User', 'officerId');
     }
 }

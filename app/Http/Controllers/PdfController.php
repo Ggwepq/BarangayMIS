@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DomPDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Resident;
 use App\Officer;
 use App\Business;
@@ -19,10 +19,10 @@ class PdfController extends Controller
     public function index($id)
     {
         $post = Resident::find($id);
-        $cman = Officer::where('position','Chairman')->first();
-        $sec = Officer::where('position','Secretary')->first();
-        $pdf = DomPDF::loadView('Forms.BarangayClearance',compact('post','cman','sec'));
-        $pdf->SetPaper('letter','portrait');;
+        $cman = Officer::where('position', 'Chairman')->first();
+        $sec = Officer::where('position', 'Secretary')->first();
+        $pdf = PDF::loadView('Forms.BarangayClearance', compact('post', 'cman', 'sec'));
+        $pdf->SetPaper('letter', 'portrait');;
         return $pdf->stream();
     }
 
@@ -35,30 +35,30 @@ class PdfController extends Controller
     public function business($id)
     {
         $post = Business::find($id);
-        $cman = Officer::where('position','Chairman')->first();
-        $sec = Officer::where('position','Secretary')->first();
-        $pdf = DomPDF::loadView('Forms.BusinessPermit',compact('post','cman','sec'));
-        $pdf->SetPaper('letter','portrait');;
+        $cman = Officer::where('position', 'Chairman')->first();
+        $sec = Officer::where('position', 'Secretary')->first();
+        $pdf = PDF::loadView('Forms.BusinessPermit', compact('post', 'cman', 'sec'));
+        $pdf->SetPaper('letter', 'portrait');;
         return $pdf->stream();
     }
 
     public function indigency($id)
     {
         $post = Resident::find($id);
-        $cman = Officer::where('position','Chairman')->first();
-        $sec = Officer::where('position','Secretary')->first();
-        $pdf = DomPDF::loadView('Forms.CertificateIndigency',compact('post','cman','sec'));
-        $pdf->SetPaper('letter','portrait');;
+        $cman = Officer::where('position', 'Chairman')->first();
+        $sec = Officer::where('position', 'Secretary')->first();
+        $pdf = PDF::loadView('Forms.CertificateIndigency', compact('post', 'cman', 'sec'));
+        $pdf->SetPaper('letter', 'portrait');;
         return $pdf->stream();
     }
 
     public function file($id)
     {
         $post = Blotter::find($id);
-        $cman = Officer::where('position','Chairman')->first();
-        $sec = Officer::where('position','Secretary')->first();
-        $pdf = DomPDF::loadView('Forms.FiletoAction',compact('post','cman','sec'));
-        $pdf->SetPaper('letter','portrait');;
+        $cman = Officer::where('position', 'Chairman')->first();
+        $sec = Officer::where('position', 'Secretary')->first();
+        $pdf = PDF::loadView('Forms.FiletoAction', compact('post', 'cman', 'sec'));
+        $pdf->SetPaper('letter', 'portrait');
         return $pdf->stream();
     }
     public function create()
