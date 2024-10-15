@@ -5,7 +5,7 @@
 ## Installation
 1. Clone this repo on your machine
 2. Start Apache and MySQL on XAMPP
-3. Run `composer update --ignore-platform-reqs`
+3. Run `composer update`
 4. Create a database in `localhost/phpmyadmin`
 5. Make a copy of .env.example `cp .env.example .env`
 6. Edit `.env` to match database details
@@ -17,6 +17,6 @@
 ## Others
 **Login Details**
 ```php
-email: jeff.lapuz09@gmail.com
-pass: qweqwe
+email: admin@gmail.com
+pass: admin
 ```

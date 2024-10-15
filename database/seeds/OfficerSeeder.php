@@ -15,7 +15,7 @@ class OfficerSeeder extends Seeder
         DB::table('officers')->insert([
             'id' => '1',
             'residentid' => '1',
-            'position' => 'Secretary',
+            'position' => 'Chairman',
             'isActive' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -24,7 +24,7 @@ class OfficerSeeder extends Seeder
         DB::table('officers')->insert([
             'id' => '2',
             'residentid' => '2',
-            'position' => 'Chairman',
+            'position' => 'Secretary',
             'isActive' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
