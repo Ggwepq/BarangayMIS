@@ -18,8 +18,7 @@ return [
                  * The list of directories and files that will be included in the backup.
                  */
                 'include' => [
-                    base_path(),
-                ],
+                    /*base_path(),*/],
 
                 /*
                  * These directories and files will be excluded from the backup.
@@ -92,8 +91,7 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'your@example.com',
-        ],
+            /*'to' => 'ggwepq@gmail.com',*/],
 
         'slack' => [
             'webhook_url' => '',
